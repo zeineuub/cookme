@@ -1,0 +1,67 @@
+{
+    "form": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "phoneNumber": "Numéro de téléphone",
+      "email": "Adresse email",
+      "password": "Mot de passe",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer mot de passe",
+      "currentPassword": "Mot de passe actuel",
+      "signIn": "Connexion",
+      "signUp":"Sign Up",
+      "logIn": "Connectez-vous",
+      "haveAccount": "Vous avez déjà un compte?",
+      "doNotHaveAccount": "Vous n'avez pas de compte?",
+      "forgotPassword": "Mot de passe oublié",
+      "code": "Code",
+      "welcomeTxt":"Bon Retour",
+      "infoMessageResetPassword":"Nous vous avons envoyé le code sur cette adresse!",
+      "enterLP":"Entrer plaque d’immatriculation",
+      "infoMessageForgetPassword":"Pas de problème, envoyez nous votre email et nous vous enverrons un email de récupération"
+      
+  },
+  "sessions": {
+    "ongoingSession":"Session en cours:",
+    "payedAmount":"Montant payé",
+    "vehicle":"Véhicule",
+    "area": "Zone",
+    "signIn": "Connexion"
+
+  },
+  "buttons":{
+    "save": "Enregistrer",
+    "cancel":"Annuler",
+    "scan":"Scanner",
+    "type":"Saisir manuellement",
+    "send":"Envoyé",
+    "createAccount":"Créer un compte",
+    "doHaveAccount": "J'ai déjà un compte",
+    "check":"Verifier",
+    "ok":"Ok",
+    "next":"Suivant",
+    "goBack":"Retourner"
+
+  },
+  "imagePicker":{
+    "takePicture":"Prendre une photo",
+    "scanPicture":"Scanner la plaque d’immatriculation de la voiture pour vérifier son paiement",
+    "ajustPicture":"Ajuster la photo",
+    "redifinePicture":"Il faut redéfinir la photo et ne laisser que la plaque d’immatriculation visible",
+    "checkPicture":"Verifier la plaque",
+    "sendPicture":"Soumette la photo pour pouvoir faire une reconnaissance de la plque d’immatriculation"
+    },
+    "information":{
+        "infoDelayOcrMessage":"Veuillez patienter pendant le traitement de l'image. Cela peut prendre quelques secondes..."
+    },
+    "onbroading":{
+        "welcomeMessage":"Bienvenue dans DashBike"
+    },
+    "drawer":{
+        "profile":"Profile",
+        "params":"Paramètres",
+        "home":"Acceuil",
+        "logout":"Déconnexion"
+    }
+}
+  

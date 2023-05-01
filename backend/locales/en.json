@@ -1,0 +1,60 @@
+{
+	"user": {
+		"validation": {
+			"short_password": "Your password is too short.",
+			"required_password": "You must enter a password.",
+			"required_email": "You must enter your email.",
+			"invalid_email": "You must enter a valid email.",
+			"required_firstName": "You must enter your first name.",
+			"invalid_firstName_format": "The first name field can only include alphabetic letters.",
+			"firstName_length": "Your first name must contain at least two characters.",
+			"required_phone_number": "Phone number is required.",
+			"invalid_phone_number": "The phone number is invalid.",
+			"required_lastName": "You must enter your last name.",
+			"invalid_lastName_format": "The name field can only include alphabetic letters",
+			"lastName_length": "Your last name must contain at least two characters.",
+			"inverified_phone_number": "Phone number is not verified",
+			"assigned_phone_number": "Phone number is already assigned.",
+			"required_current_password": "Current password is required",
+			"invalid_notifService": "The notify service must be boolean"
+		},
+		"authorization": {
+			"invalid_token": "Invalid authorization token",
+			"token_not_found": "Token not found",
+			"access_permission": "Insufficient permission to perform this action",
+			"status_not_allowed": "Your status does not allow you to access this server",
+			"unauthorized_action": "You are not authorized to perform this action"
+		},
+		"update": {
+			"reset_password": {
+				"email_not_found": "Oops! we couldn't find an account with this email address",
+				"attempt_limit": "Attempts exceeded",
+				"invalid_code": "invalid or expired code",
+				"invalid_password": "Invalid Password"
+			}
+		},
+		"text": {
+			"message": "is your activation code for the %s application"
+		},
+		"user_not_found": "User not found",
+		"authentication": {
+			"invalid_credentials": "Login parameters are incorrect"
+		}
+	},
+	"vehicle": {
+		"validation": {
+			"required_language": "vehicle.validation.required_language"
+		}
+	},
+	"recipe": {
+		"validation": {
+			"required_title": "The title is required",
+			"required_ingredients": "The ingredients are required",
+			"required_instructions": "The instructions are required",
+			"required_equipments": "The equipments are required"
+		}
+	},
+	"registration": {
+		"exist_user": "%s %s already exists"
+	}
+}

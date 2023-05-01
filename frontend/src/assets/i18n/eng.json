@@ -1,0 +1,67 @@
+
+{
+    "form": {
+      "firstName": "FirstName",
+      "lastName": "Name",
+      "phoneNumber": "Phone Number",
+      "email": "Email address",
+      "password": "Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "currentPassword": "Current Password",
+      "signIn": "Sign In",
+      "logIn": "Log in",
+      "signUp":"Sign Up",
+      "haveAccount": "Already have an account?",
+      "doNotHaveAccount": "Don't have an account?",
+      "forgotPassword": "Forgot Password",
+      "code": "Code",
+      "welcomeTxt":"Welcome Back",
+      "infoMessageResetPassword":"We sent you the code to this address!",
+      "enterLP":"Enter license plate",
+      "infoMessageForgetPassword":"No problem, send us your email and we'll send you a recovery email"
+      
+  },
+  "sessions": {
+    "ongoingSession":"Current session:",
+    "paidAmount":"Amount Paid",
+    "vehicle":"Vehicle",
+    "area": "Area",
+    "signIn": "Sign In"
+
+  },
+  "buttons":{
+    "save": "Save",
+    "cancel":"Cancel",
+    "scan":"Scanner",
+    "type":"Enter manually",
+    "send":"Sent",
+    "createAccount":"Create Account",
+    "doHaveAccount": "I already have an account",
+    "check":"Verify",
+    "ok":"Ok",
+    "next":"Next",
+    "goBack":"Go back"
+
+  },
+  "imagePicker":{
+    "takePicture":"Take Picture",
+    "scanPicture":"Scan the car's license plate to verify its payment",
+    "adjustPicture":"Adjust Picture",
+    "redifinePicture":"You must redefine the photo and leave only the license plate visible",
+    "checkPicture":"Check Plate",
+    "sendPicture":"Submit the photo to be able to do a license plate recognition"
+    },
+    "information":{
+        "infoDelayOcrMessage":"Please wait while the image is processed. This may take a few seconds..."
+    },
+    "onbroading":{
+        "welcomeMessage":"Welcome to CookMe"
+    },
+    "drawing":{
+        "profile":"Profile",
+        "params":"Parameters",
+        "home":"Home",
+        "logout":"Logout"
+    }
+}

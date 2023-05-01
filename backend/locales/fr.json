@@ -1,0 +1,50 @@
+{
+
+	"user": {
+		"validation": {
+			"short_password": "Votre mot de passe est trop court.",
+			"required_password": "Vous devez entrer un mot de passe.",
+			"required_email": "Vous devez entrer votre email.",
+			"invalid_email": "Vous devez entrer un email valide.",
+			"required_firstName": "Vous devez entrer votre prénom.",
+			"invalid_firstName_format": "Le champ prénom ne peut inclure que des letters alphabetiques.",
+			"firstName_length": "Votre prénom doit contenir au moins deux caractères.",
+			"required_phone_number": "Le numéro de téléphone est requis.",
+			"invalid_phone_number": "Le numéro de téléphone est invalide.",
+			"required_lastName": "Vous devez entrer votre nom.",
+			"invalid_lastName_format": "Le champ nom ne peut inclure que des letters alphabetiques",
+			"lastName_length": "Votre nom doit contenir au moins deux caractères.",
+			"inverified_phone_number": "Le numéro de téléphone n'est pas vérifié",
+			"assigned_phone_number": "Numéro de téléphone est déja attribué.",
+			"required_current_password": "Le mot de passe actuel est requis",
+			"invalid_notifService": "Le service de notification est invalid",
+			"required_notifService": "Le service de notification est requis"
+		},
+		"authorization": {
+			"invalid_token": "Token d'autorisation non valide",
+			"token_not_found": "Token non trouvé",
+			"access_permission": "Permission insuffisante pour éffectuer cette action",
+			"status_not_allowed": "Votre statut ne vous permet pas d'accéder à ce serveur",
+			"unauthorized_action": "Vous n'êtes pas autorisé à effectuer cette action"
+		},
+		"registration": {
+			"exist_user":"%s %s existe déja"
+		},
+		"update": {
+			"reset_password": {
+				"email_not_found": "Oups! nous n’avons pas pu trouver un compte avec cette adresse email",
+				"attempt_limit": "Nombre de tentatives dépassé",
+				"invalid_code": "code non valide ou expiré",
+				"invalid_password": "Mot de passe non valide"
+			}
+		},
+		"authentication": {
+			"invalid_credentials": "Les paramètres de connexion sont erronés"
+		},
+		"sms": {
+			"message": "est votre code d'activation pour l'application %s"
+		},
+		"user_not_found": "L'utilisateur est introuvable"
+	}
+	
+}
