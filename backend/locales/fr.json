@@ -1,5 +1,4 @@
 {
-
 	"user": {
 		"validation": {
 			"short_password": "Votre mot de passe est trop court.",
@@ -28,7 +27,7 @@
 			"unauthorized_action": "Vous n'êtes pas autorisé à effectuer cette action"
 		},
 		"registration": {
-			"exist_user":"%s %s existe déja"
+			"exist_user": "%s %s existe déja"
 		},
 		"update": {
 			"reset_password": {
@@ -45,6 +44,8 @@
 			"message": "est votre code d'activation pour l'application %s"
 		},
 		"user_not_found": "L'utilisateur est introuvable"
+	},
+	"registration": {
+		"exist_user": "registration.exist_user"
 	}
-	
 }

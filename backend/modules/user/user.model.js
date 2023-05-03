@@ -46,9 +46,23 @@ const UserSchema = new Schema({
         type: String,
         enum: [STATUS_ACTIVE],
     },
-    myRecipes: [{ 
-      type: Schema.Types.ObjectId,
-      ref: 'Recipe',
+    myRecipes: [{
+      _id: {
+        type: Schema.Types.ObjectId,
+        ref: 'Recipe'
+      },
+      favorite: {
+        type: Boolean,
+        default: false
+      },
+      tried: {
+        type: Boolean,
+        default: false
+      },
+      rating: {
+        type: Number,
+        default:0
+      },
     }]
 },
 {

@@ -1,8 +1,43 @@
-import React from 'react';
 import { View, Text, StyleSheet, Image,ScrollView } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { useFonts } from "expo-font";
+import { useIsFocused } from '@react-navigation/native';
+import { fr, en } from "../assets/i18n/supportedLanguages";
+import * as Localization from "expo-localization";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import i18n from "i18n-js";
 const ListIngredients = ({ amount, unit, name }) => {
-console.log(name.split(" ")[name.split(" ").length - 1])
+  const isFocused = useIsFocused();
+  i18n.fallbacks = true;
+  i18n.translations = { en,fr };
+  i18n.locale = Localization.locale;
+  useEffect(() => {
+    const init = async () => {
+      i18n.fallbacks = true;
+      i18n.translations = { en, fr };
+      try {
+        const language = await AsyncStorage.getItem("user-language");
+        i18n.locale = language;
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    init();
+  }, [isFocused]);
+  const [loaded] = useFonts({
+    "Poppins-Regular": require("../../assets/fonts/Poppins-Regular.otf"),
+    "Poppins-Medium": require("../../assets/fonts/Poppins-Medium.otf"),
+    "Poppins-SemiBold": require("../../assets/fonts/Poppins-SemiBold.otf"),
+    "Poppins-Bold": require("../../assets/fonts/Poppins-Bold.otf"),
+    "Damion-Regular": require("../../assets/fonts/Damion-Regular.ttf"),
+
+    
+  });
+
+  if (!loaded) {
+    return null;
+  }
   return (
     <ScrollView >
         <View style={styles.container}>

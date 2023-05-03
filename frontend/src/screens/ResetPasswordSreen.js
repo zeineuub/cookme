@@ -8,10 +8,15 @@ import {
   View,
 } from "react-native";
 import { useFonts } from "expo-font";
-
+import AnimatedLoader from "react-native-animated-loader";
+import BGDOWNSVG from "../assets/images/sign_in_down.svg";
+import BGUPSVG from "../assets/images/sign_in_up.svg";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from "expo-linear-gradient";
-const API_URL = "http://192.168.1.7:3000/api/v1";
+import * as Localization from "expo-localization";
+import i18n from "i18n-js";
+import { fr, en } from "../assets/i18n/supportedLanguages";
+const API_URL = "http://192.168.146.55:3000/api/v1";
 const ResetPasswordScreen = ({ navigation }) => {
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState("");
@@ -19,7 +24,22 @@ const ResetPasswordScreen = ({ navigation }) => {
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  i18n.fallbacks = true;
+  i18n.translations = { en,fr };
+  i18n.locale = Localization.locale;
+  const showToastMsg = (msg) => {
+    try {
+      ToastAndroid.showWithGravityAndOffset(
+        msg,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        100,
+        100,
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const onLoggedIn = (token) => {
     fetch(`${API_URL}/auth/me`, {
       method: "GET",
@@ -106,9 +126,10 @@ const ResetPasswordScreen = ({ navigation }) => {
         flex: 1,
         alignItems: "center",
         backgroundColor: "white",
-        marginTop: -500,
       }}
-    >
+    >   
+    <BGUPSVG style={styles.bg_up} />
+
       <View>
         <Text style={styles.textSignIn}>{email}</Text>
         <Text
@@ -117,7 +138,7 @@ const ResetPasswordScreen = ({ navigation }) => {
             { fontSize: 15, fontFamily: "Poppins-Regular" },
           ]}
         >
-          Nous vous avons envoyé le code sur cette adresse!
+          {i18n.t('form.seninfoMessageResetPasswordd')}
         </Text>
       </View>
 
@@ -130,7 +151,7 @@ const ResetPasswordScreen = ({ navigation }) => {
 
       <TextInput
         style={styles.input}
-        placeholder="mot de passe"
+        placeholder={i18n.t('form.pwd')}
         secureTextEntry={true}
         onChangeText={setPassword}
       />
@@ -144,7 +165,7 @@ const ResetPasswordScreen = ({ navigation }) => {
         style={styles.button}
       >
         <TouchableOpacity onPress={resetPassword}>
-          <Text style={styles.text}>Envoyer</Text>
+          <Text style={styles.text}>{i18n.t('buttons.send')}</Text>
         </TouchableOpacity>
       </LinearGradient>
       <View style={styles.container}>
@@ -156,6 +177,8 @@ const ResetPasswordScreen = ({ navigation }) => {
           source={require("../assets/lottie/loader-colors.json")} // Add here
         />
       </View>
+      <BGDOWNSVG style={styles.bg_down} />
+
     </SafeAreaView>
   );
 };
@@ -166,6 +189,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF",
+  },
+  bg_up: {
+    top: 30,
+    left:80
+  },
+  bg_down: {
+    top: 20,
   },
   lottie: {
     width: 300,

@@ -52,21 +52,22 @@
                 type: String 
             }
         }],
-        favorite: { 
-            type: Boolean, 
-            default: false 
-          },
-        tried: { 
-            type: Boolean, 
-            default: false 
-        },
-        rating: { 
-            type: Number 
-        },
-        comment: { 
-            type: String 
-        }, 
+        comments: [{ 
+            user:{
+                type: Schema.Types.ObjectId,
+                ref: 'User' 
+            },
+            comment:[{
+                text:{
+                    type:String
+                },
+                createdAt: {
+                    type: String,
+                }
+            }],
 
+        }],
+        
     },
     {
         timestamps: {

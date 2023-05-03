@@ -30,11 +30,3 @@ module.exports.searchRecipe = {
   },
    
 }
-module.exports.favoriteRecipe = {
-  favorite: {
-      exists: {
-        errorMessage: i18n.__('recipe.validation.required_ingredients'),
-      },
-  },
-   
-}

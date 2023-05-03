@@ -5,6 +5,8 @@ import { AuthContext } from "../components/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFonts } from "expo-font";
 import * as Localization from "expo-localization";
+import { useIsFocused } from '@react-navigation/native';
+
 import {
   SafeAreaView,
   Text,
@@ -18,7 +20,7 @@ import {
 import BGDOWNSVG from "../assets/images/bg-down.svg";
 import BGUPSVG from "../assets/images/bg-up.svg";
 import Toast from 'react-native-toast-message';
-const API_URL = "http://192.168.1.7:3000/api/v1";
+const API_URL = "http://192.168.146.55:3000/api/v1";
 import i18n from "i18n-js";
 import { fr, en } from "../assets/i18n/supportedLanguages";
 const SignUpScreen = ({navigation}) => {
@@ -37,6 +39,27 @@ const SignUpScreen = ({navigation}) => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const init = async()=>{
+      i18n.fallbacks = true;
+      i18n.translations = { en,fr };
+      try {
+        const language = await AsyncStorage.getItem("user-language");
+        i18n.locale = language;
+        const token = await AsyncStorage.getItem("accessToken");
+        setMessage("");
+        setEmailError("");
+        setPasswordError("")
+        setPhoneNumberError("")
+      } catch (e) {
+        console.log(e);
+      }
+    }
+     init();
+  }, [isFocused]);
+
   const showToastMsg = (msg) => {
     try {
       ToastAndroid.showWithGravityAndOffset(
@@ -52,28 +75,35 @@ const SignUpScreen = ({navigation}) => {
   };
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError('Invalid email format');
-    } else {
+    if (email.length == 0 ) {
+      setEmailError('Email must not be empty'); 
+    } else if (!emailRegex.test(email) ) {
+        setEmailError('Invalid email format');
+    }else {
       setEmailError('');
     }
   };
 
   const validatePassword = (password) => {
-    if (password.length < 8) {
+    if (password == null ) {
+      setPasswordError('Password must not be empty');
+
+    } else if (password.length < 8) {
       setPasswordError('Password must be at least 8 characters long');
-    } else {
+    }
+    else {
       setPasswordError('');
     }
   };
-
   const validatePhoneNumber = (phoneNumber) => {
+    
     if (phoneNumber.length !== 8 || isNaN(phoneNumber)) {
       setPhoneNumberError('Phone number must be exactly 8 digits long');
     } else {
       setPhoneNumberError('');
     }
   };
+
   const onLoggedIn = async (token) => {
     fetch(`${API_URL}/auth/me`, {
       method: "GET",
@@ -105,60 +135,70 @@ const SignUpScreen = ({navigation}) => {
   const haveAccount = () => {
     navigation.navigate("SignIn");
   };
+  const checkFields = () => {
+    if (email.length ==0 || firstName.length ==0  ||  lastName.length ==0 ||  password.length ==0  ) {
+      setPasswordError('Fields must not be empty');
+    } else {
+      return true;
+    }
+  }
   const onSubmitHandler = async()=>{
-    setIsLoading(true);
-    const language = i18n.locale.split('-')[0];
-    console.log('lang ',language)
-    let phone = "+216"+phoneNumber;
-    const payload = {
-      email,
-      password,
-      phoneNumber:phone,
-      language,
-      firstName,
-      lastName
-    };
-
-    await fetch(`${API_URL}/auth/register`,{
-      method:"POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-    .then(async (res)=>{
-      try{
-        const jsonRes = await res.json();
-        console.log(jsonRes);
-
-        if(res.status !==200) {
-          const { message } = jsonRes.errors[0];
-          console.log('msg ',message)
-          setIsError(true);
-          setMessage(message);
-
-          setIsLoading(false);
-          
-        } else {
-            await onLoggedIn(jsonRes.accessToken);
-            signUp(jsonRes.accessToken);
-            setIsError(false);
+      setIsLoading(true);
+      const language = i18n.locale.split('-')[0];
+      console.log('lang ',language)
+      let phone = "+216"+ phoneNumber;
+      console.log(phoneNumber)
+      const payload = {
+        email,
+        password,
+        phoneNumber:phone,
+        language,
+        firstName,
+        lastName
+      };
+  
+      await fetch(`${API_URL}/auth/register`,{
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+      .then(async (res)=>{
+        try{
+          const jsonRes = await res.json();
+          console.log(jsonRes);
+  
+          if(res.status !==200) {
+            const { message } = jsonRes.errors[0];
+            console.log('msg ',message)
+            setIsError(true);
+            setMessage(message);
+  
             setIsLoading(false);
-            navigation.navigate("HomeStack");
-
+            
+          } else {
+              await onLoggedIn(jsonRes.accessToken);
+              signUp(jsonRes.accessToken);
+              setIsError(false);
+              setIsLoading(false);
+              navigation.navigate("SignIn");
+  
+          }
+        } catch (error) {
+          console.log(error);
+          setIsLoading(false);
+          showToastMsg(i18n.t('error.connexion'));
+  
         }
-      } catch (error) {
-        console.log(error);
+      })
+      .catch((err) => {
+        console.log(err);
         setIsLoading(false);
         showToastMsg(i18n.t('error.connexion'));
-
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      setIsLoading(false);
-      showToastMsg(i18n.t('error.connexion'));
-    });
+      });
+  
+    
   }
 
   const [loaded] = useFonts({
@@ -201,9 +241,9 @@ const SignUpScreen = ({navigation}) => {
         style={styles.input}
         placeholder={i18n.t('form.phoneNumber')}
         keyboardType="number-pad"
-        onChangeText={(text) => {
-          setPhoneNumber(text);
-          validatePhoneNumber(text);
+        onChangeText={(phoneNumber) => {
+          setPhoneNumber(phoneNumber);
+          validatePhoneNumber(phoneNumber);
         }}
       />
       {phoneNumberError ? <Text style={[styles.message, { color: "red" }]}>{phoneNumberError}</Text> : null}

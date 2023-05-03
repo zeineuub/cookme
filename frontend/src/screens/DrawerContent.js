@@ -1,4 +1,4 @@
-const API_URL = "http://192.168.1.7:3000/api/v1";
+const API_URL = "http://192.168.146.55:3000/api/v1";
 import { Title, Caption, Drawer } from "react-native-paper";
 import { View, StyleSheet } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
@@ -9,10 +9,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { useFonts } from "expo-font";
+import * as Localization from "expo-localization";
+import i18n from "i18n-js";
+import { fr, en } from "../assets/i18n/supportedLanguages";
+import { useIsFocused } from '@react-navigation/native';
 
 export function DrawerContent(props) {
   const { signOut } = React.useContext(AuthContext);
   const [user, setUser] = React.useState({});
+  const isFocused = useIsFocused();
+
+  i18n.fallbacks = true;
+  i18n.translations = { en,fr };
+  i18n.locale = Localization.locale;
   const onLoggedIn = async (token) => {
     fetch(`${API_URL}/auth/me`, {
       method: "GET",
@@ -42,16 +51,20 @@ export function DrawerContent(props) {
   };
 
   React.useEffect(() => {
-    setTimeout(async () => {
-      // setIsLoading(false);
+    const init = async () => {
+      i18n.fallbacks = true;
+      i18n.translations = { en, fr };
       try {
+        const language = await AsyncStorage.getItem("user-language");
+        i18n.locale = language;
         const token = await AsyncStorage.getItem("accessToken");
         await onLoggedIn(token);
       } catch (e) {
         console.log(e);
       }
-    }, 100);
-  }, []);
+    };
+    init();
+  }, [isFocused]);
   const [loaded] = useFonts({
     "Poppins-Regular": require("../../assets/fonts/Poppins-Regular.otf"),
     "Poppins-Medium": require("../../assets/fonts/Poppins-Medium.otf"),
@@ -65,12 +78,12 @@ export function DrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
 
-    <View style={{ flex: 1, height: "100%" }}>
+    <View style={{marginTop:-5, height: "100%" ,width:"100%"}}>
         <LinearGradient
           colors={["#F8932D", "#FA783E", "#FC5851"]}
           start={{ x: 0, y: 1 }}
           end={{ x: 1, y: 0 }}
-          style={{ height: 800, width:"100%" }}
+          style={{ height: 900, width:"100%" ,}}
         >
           <View style={styles.drawerContent}>
             <View style={styles.userInfoSection}>
@@ -105,7 +118,7 @@ export function DrawerContent(props) {
                 activeBackgroundColor="white"
                 activeTintColor="black"
                 inactiveTintColor="white"
-                label="Acceuil"
+                label={i18n.t("drawer.home")}
                 onPress={() => {
                   props.navigation.navigate("Home");
                 }}
@@ -114,7 +127,7 @@ export function DrawerContent(props) {
                 icon={({ color, size, focused }) => (
                   <Icon name={focused ? 'account' : 'account-outline'} color={color} size={size} />
                 )}
-                label="Profile"
+                label={i18n.t("drawer.profile")}
                 activeBackgroundColor="white"
                 activeTintColor="black"
                 inactiveTintColor="white"
@@ -129,7 +142,7 @@ export function DrawerContent(props) {
                 activeBackgroundColor="white"
                 activeTintColor="black"
                 inactiveTintColor="white"
-                label="Paramètres"
+                label={i18n.t("drawer.params")}
                 onPress={() => {
                   props.navigation.navigate("SettingsStack");
                 }}
@@ -142,7 +155,7 @@ export function DrawerContent(props) {
                 icon={({ color, size }) => (
                   <Icon name="exit-to-app" color={color} size={size} />
                 )}
-                label="Déconnexion"
+                label={i18n.t("drawer.logout")}
                 activeBackgroundColor="white"
                 activeTintColor="black"
                 inactiveTintColor="white"
@@ -161,6 +174,8 @@ export function DrawerContent(props) {
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
+    top:-10,
+    height: "100%" 
   },
   userInfoSection: {
     paddingLeft: 0,

@@ -6,15 +6,37 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ToastAndroid
 } from "react-native";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
-const API_URL = "http://192.168.1.7:3000/api/v1";
+import BGDOWNSVG from "../assets/images/sign_in_down.svg";
+import BGUPSVG from "../assets/images/sign_in_up.svg";
+const API_URL = "http://192.168.146.55:3000/api/v1";
+import * as Localization from "expo-localization";
+import i18n from "i18n-js";
+import { fr, en } from "../assets/i18n/supportedLanguages";
+import axios from "axios";
 const ForgetPasswordScreen = ({navigation}) => {
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
-  
+  i18n.fallbacks = true;
+  i18n.translations = { en,fr };
+  i18n.locale = Localization.locale;
+  const showToastMsg = (msg) => {
+    try {
+      ToastAndroid.showWithGravityAndOffset(
+        msg,
+        ToastAndroid.SHORT,
+        ToastAndroid.TOP,
+        100,
+        100,
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const forgetPassword = () => {
     const payload = {
       email,
@@ -33,18 +55,17 @@ const ForgetPasswordScreen = ({navigation}) => {
           if (res.status !== 204) {
             const { message } = jsonRes.errors[0];
             setIsError(true);
-            setMessage(message);
+            showToastMsg(message);
           } else {
             setIsError(false);
+            showToastMsg('Enter code')
             navigation.navigate("Reset-Password");
           }
         } catch (err) {
           console.log(err);
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+
   };
   const [loaded] = useFonts({
     "Poppins-Regular": require("../../assets/fonts/Poppins-Regular.otf"),
@@ -56,17 +77,47 @@ const ForgetPasswordScreen = ({navigation}) => {
   if (!loaded) {
     return null;
   }
+  const handleEmail = async () => {
+    const code = Math.floor(100000 + Math.random() * 900000);
+    const API_KEY = "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";
+
+    const config = {
+      headers: {
+        "api-key": API_KEY,
+        "content-type": "application/json",
+      },
+    };
+  
+    const data = {
+      sender: { email: "gahda.malek12@gmail.com" },
+      to: [{ email: email }],
+      subject: "Code verification",
+      htmlContent: `<p>Your verification code is: ${code}</p>`,
+    };
+  
+    try {
+      const response = await axios.post(
+        "https://api.sendinblue.com/v3/smtp/email",
+        data,
+        config
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    navigation.navigate('Reset-Password')
+  }
   return (
     <SafeAreaView
       style={{
         flex: 1,
         alignItems: "center",
         backgroundColor: "white",
-        marginTop: -500,
       }}
     >
+      <BGUPSVG style={styles.bg_up} />
       <View>
-        <Text style={styles.textSignIn}>Mot de passe oubliè !</Text>
+        <Text style={styles.textSignIn}>{i18n.t('header.forgetpwd')}</Text>
       </View>
 
       <TextInput
@@ -84,10 +135,12 @@ const ForgetPasswordScreen = ({navigation}) => {
         end={{ x: 1, y: 0 }}
         style={styles.button}
       >
-        <TouchableOpacity onPress={forgetPassword}>
-          <Text style={styles.text}>Envoyer</Text>
+        <TouchableOpacity onPress={handleEmail}>
+          <Text style={styles.text}>{i18n.t('buttons.send')}</Text>
         </TouchableOpacity>
       </LinearGradient>
+      <BGDOWNSVG style={styles.bg_down} />
+
     </SafeAreaView>
   );
 };
@@ -98,6 +151,13 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: "#F5FCFF",
+    },
+    bg_up: {
+      top: 30,
+      left:80
+    },
+    bg_down: {
+      top: 20,
     },
     lottie: {
       width: 300,
@@ -113,7 +173,7 @@ const styles = StyleSheet.create({
       fontFamily: "Poppins-SemiBold",
       fontStyle: "normal",
       fontSize: 32,
-      color: "#002B7F",
+      color: "#752A00",
     },
     text: {
       width: 250,

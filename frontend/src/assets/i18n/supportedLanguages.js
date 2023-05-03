@@ -1,5 +1,7 @@
 const en = {
   form: {
+    pwd:"Password",
+
     firstName: "FirstName",
     lastName: "LastName",
     phoneNumber: "Phone Number",
@@ -10,9 +12,9 @@ const en = {
     confirmPassword: "Confirm Password",
     currentPassword: "Current Password",
     signUp:"Sign Up",
-    haveAccount: "Already have an account?",
-    doNotHaveAccount: "Don't have an account?",
-    forgotPassword: "Forgot Password",
+    haveAccount: "Already have an account ?",
+    doNotHaveAccount: "Don't have an account ?",
+    forgotPassword: "you forgot  your password ?",
     code: "Code",
     welcomeTxt: "Welcome Back",
     infoMessageResetPassword: "We sent you the code to this address!",
@@ -29,6 +31,7 @@ const en = {
     start: "Start",
     stop: "Stop",
     send: "Sent",
+    comment:'Comment',
     createAccount: "Create Account",
     doHaveAccount: "I already have an account",
     check: "Verify",
@@ -38,6 +41,7 @@ const en = {
     next:"Next",
     goBack:"Go back",
     montainBike:"Montain Bike",
+    connect:"Connect"
   },
 
   icon: {
@@ -79,7 +83,14 @@ const en = {
     upload:"Upload",
     cancel: "Cancel",
     recipe:"Recipes",
-    fav:'My favorite'
+    fav:'My favorite',
+    instructions:'Instructions',
+    comments:'Comments',
+    equipments:'Equipments',
+    ingredients:'Ingredients',
+    saved:"Saved recipes",
+    forgetpwd:'Forget password !',
+    detail:'Details'
 
   },
   settings:{
@@ -88,7 +99,9 @@ const en = {
     logout:"Log out",
     darkTheme:"Dark theme",
     uploadSub:"Choose Your Way",
-    language:"Language"
+    language:"Language",
+    languageSub:"Choose a language"
+
   },
   error:{
     update:"Failed to update !",
@@ -106,7 +119,9 @@ const fr = {
     takeimage:"Prendre",
     upload:"Télécharger une image",
     uploadSub:"Choisis ta façon",
-    language:"Langue"
+    language:"Langue",
+    languageSub:"Choisis une langue"
+
 
   },
 
@@ -121,7 +136,16 @@ const fr = {
     takeimage:"Prendre photo",
     cancel: "Retourner",
     recipe:"Recettes",
-    fav:'Mes favories'
+    fav:'Mes favories',
+    saved:"Recettes enregistrées",
+    instructions:'Instructions',
+    comments:'Commentaires',
+    equipments:'Equipements',
+    ingredients:'Ingredients',
+    forgetpwd:'Mot de passe oublié !',
+    detail:'Détails'
+
+
   },
   toast:{
     updateAccount:"Le compte à été mise à jour"
@@ -139,8 +163,9 @@ const fr = {
     currentPassword: "Mot de passe actuel",
     haveAccount: "Vous avez déjà un compte?",
     doNotHaveAccount: "Vous n'avez pas de compte?",
-    forgotPassword: "Mot de passe oublié",
+    forgotPassword: "Mot de passe oublié ?",
     code: "Code",
+    pwd:"Mot de passe",
     welcomeTxt: "Bon Retour",
     infoMessageResetPassword:
       "Nous vous avons envoyé le code sur cette adresse!",
@@ -154,6 +179,7 @@ const fr = {
     start: "Commencer",
     stop: "Arrêter",
     send: "Envoyé",
+    comment:'Commenter',
     createAccount: "Créer un compte",
     doHaveAccount: "J'ai déjà un compte",
     check: "Verifier",
@@ -162,6 +188,8 @@ const fr = {
     ok: "Ok",
     next:"Suivant",
     goBack:"Retourner",
+    connect:"Connecter"
+
 
 
   },

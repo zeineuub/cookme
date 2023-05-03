@@ -5,15 +5,16 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { AuthContext } from "./src/components/AuthContext";
 import SplashScreen from "./src/screens/SplashScreen";
 import { DrawerContent } from "./src/screens/DrawerContent";
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProfileStack from "./src/navigation/ProfileStack";
 import SettingsStack from "./src/navigation/SettingsStack";
 import { StatusBar } from "react-native";
 import AuthStack from "./src/navigation/AuthStack";
 import TabNavigator from './src/navigation/TabNavigator';
-import HomeScreen from './src/screens/HomeScreen';
+import { LogBox } from "react-native";
+import OnboardingScreen from './src/screens/OnboardingScreen';
 const Drawer = createDrawerNavigator();
+LogBox.ignoreAllLogs();
 
 function App() {
   const initialLoginState = {
@@ -105,6 +106,7 @@ function App() {
       <NavigationContainer>
         {loginState.userToken !== null ? (
           <Drawer.Navigator
+          initialRouteName='Onboarding'
             screenOptions={{
               headerShadowVisible:false,
               headerShown:false,
@@ -116,11 +118,12 @@ function App() {
                 fontFamily: "Poppins-Medium",
                 fontSize: 15,
               },
+              
             }}
             drawerContent={(props) => <DrawerContent {...props} />}
           >
             <Drawer.Screen
-              name="HomeDrawer"
+              name="Home"
               component={TabNavigator}
               options={{
                 title: "",
@@ -128,6 +131,7 @@ function App() {
 
               }}
             />
+
             <Drawer.Screen
               name="ProfileStack"
               component={ProfileStack}

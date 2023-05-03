@@ -103,59 +103,43 @@ function forgotPassword(req, res, next) {
  * @returns {}
  */
 function preferences(req, res, next) {
-    userService
-      .updatePreferences(req.user.sub, req.body)
-      .then((data) => (data ? res.json({data}) : res.sendStatus(204)))
-      .catch((err) => next(err));
-};
-
-/**
- * Favorite recipe
- * @param req
- * @param res
- * @param next
- * @returns {recipe}
- */
-function favoriteRecipe(req, res, next) {
-  recipeService
-    .getRecipe(req.user.sub,req.params.recipeId, req.body)
-    .then((recipe) => (recipe ? res.json(user) : res.sendStatus(204)))
+  userService
+    .updatePreferences(req.user.sub, req.body)
+    .then((data) => (data ? res.json({data}) : res.sendStatus(204)))
     .catch((err) => next(err));
 };
+
+
 module.exports = router;
 
 /**
  * POST /api/v1/users/change-password
  * Change password of current user
  */
-
 router.post(
-    '/change-password',
-    authorize(['client']),
-    checkSchema(changePasswordSchema),
-    checkSchemaErrors,
-    changePassword
-  );
+  '/change-password',
+  authorize(['client']),
+  checkSchema(changePasswordSchema),
+  checkSchemaErrors,
+  changePassword
+);
+
 /**
  * POST /api/v1/users/forgot-password
  * Forgot password
  */
-
 router.post(
-    '/forgot-password',
-    checkSchema(forgotPasswordSchema),
-    checkSchemaErrors,
-    forgotPassword
-  );  
+  '/forgot-password',
+  checkSchema(forgotPasswordSchema),
+  checkSchemaErrors,
+  forgotPassword
+);  
 
-  
 /**
  * POST /api/v1/user/
  * Create a user
  */
 router.post('/', checkSchema(createUserSchema), checkSchemaErrors, create);
-
-
 
 /**
  * PUT /api/v1/user/
@@ -165,7 +149,8 @@ router.put('/',
   authorize(['client', 'admin'],['active']),
   checkSchema(updateUserSchema),
   checkSchemaErrors,
-  updateOne);
+  updateOne
+);
 
 
 /**
@@ -173,28 +158,19 @@ router.put('/',
  * Delete a user
  */
 router.delete(
-    '/:id',
-    authorize(['admin']),
-    deleteOne
-  );
+  '/:id',
+  authorize(['admin']),
+  deleteOne
+);
 
 /**
  * PUT /api/v1/user/language
  * update user preference
  */
 router.put(
-    '/language',
-    checkSchema(updateLanguageSchema),
-    checkSchemaErrors,
-    authorize(['client', 'admin'], ['active']),
-    preferences
-)
-/**
- * PUT /api/v1/user/favourite-recipe/:id
- * favourite recipe
- */
-router.put(
-  '/favourite-recipe/:id',
+  '/language',
+  checkSchema(updateLanguageSchema),
+  checkSchemaErrors,
   authorize(['client', 'admin'], ['active']),
-  favoriteRecipe
-)
+  preferences
+);

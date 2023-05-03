@@ -21,10 +21,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import LottieView from 'lottie-react-native';
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-const API_URL = "http://192.168.1.7:3000/api/v1";
+const API_URL = "http://192.168.146.55:3000/api/v1";
 import { useIsFocused } from '@react-navigation/native';
 import i18n from "i18n-js";
 import { fr, en } from "../assets/i18n/supportedLanguages";
+import { launchCameraAsync } from "expo-image-picker";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -38,16 +39,39 @@ const ProfileScreen = ({ navigation }) => {
   const [language, setLanguage] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+  
   // This hook returns `true` if the screen is focused, `false` otherwise
   const isFocused = useIsFocused();
   const showToast = (message) => {
     ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.TOP);
   };
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email.length == 0 ) {
+      setPasswordError('Email must not be empty'); 
+    } else if (!emailRegex.test(email) ) {
+        setEmailError('Invalid email format');
+    }else {
+      setEmailError('');
+    }
+  };
+
+  const validatePhoneNumber = (phoneNumber) => {
+    if (phoneNumber.length == 0 ) {
+      setPasswordError('PhoneNumber must not be empty'); 
+    } else if (phoneNumber.length !== 8 || isNaN(phoneNumber)) {
+      setPhoneNumberError('Phone number must be exactly 8 digits long');
+    } else {
+      setPhoneNumberError('');
+    }
+  };
 
   const onRefresh = React.useCallback(async() => {
     setRefreshing(true);
    const lang = await AsyncStorage.getItem("user-language");
-
     i18n.locale = lang;
     onLoggedIn(token);
     wait(1000).then(() => setRefreshing(false));
@@ -55,6 +79,9 @@ const ProfileScreen = ({ navigation }) => {
   const updateLanguage = async (lang) => {
     setLanguage(lang);
 
+    setTimeout(() => {
+      onRefresh()
+    }, 1000)
   };
   const onLoggedIn = async (token) => {
     await fetch(`${API_URL}/auth/me`, {
@@ -284,15 +311,26 @@ const ProfileScreen = ({ navigation }) => {
                 placeholder={i18n.t('form.email')}
                 defaultValue={user.email}
                 keyboardType="email-address"
-                onChangeText={setEmail}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  validateEmail(text);
+                }}
               />
+              {emailError ? <Text style={[styles.message, { color: "red" }]}>{emailError}</Text> : null}
+
               <TextInput
                 style={styles.input}
                 placeholder="+216"
                 defaultValue={user.phoneNumber}
                 keyboardType="phone-pad"
-                onChangeText={setPhoneNumber}
+                onChangeText={(text) => {
+                  setPhoneNumber(text);
+                  validatePhoneNumber(text);
+                }}
+                
               />
+              {phoneNumberError ? <Text style={[styles.message, { color: "red" }]}>{phoneNumberError}</Text> : null}
+
              <View style={styles.containerPanel}>
             <IonIcon color={"#4A4A4A"} size={25} name={"language-outline"} />
             <Text style={styles.textPanel}>{i18n.t("settings.language")} </Text>
@@ -390,6 +428,11 @@ const styles = StyleSheet.create({
     height: 200,
     width: "100%",
   },
+  message: {
+    fontSize: 14,
+    marginBottom: 10,
+    fontFamily: "Poppins-Regular",
+  },
   containerPanel: {
     flex: 0,
     flexDirection: "row",
@@ -424,7 +467,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     width: "100%",
-    color:"#BCC4CF",
+    color:"black",
 
   },
   button: {

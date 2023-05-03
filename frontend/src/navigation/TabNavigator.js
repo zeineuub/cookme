@@ -7,6 +7,9 @@ import HomeScreen from "../screens/HomeScreen";
 import MENUSVG from "../assets/images/menu.svg";
 import AVATARSVG from "../assets/images/avatar.svg";
 import BACKSVG from "../assets/images/back_btn.svg";
+import LIKESVG from "../assets/images/like.svg";
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import * as Animatable from 'react-native-animatable';
 import ProfileStack from './ProfileStack';
@@ -14,7 +17,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 import Icon, { Icons } from '../components/Icon';
 import DetailScreen from '../screens/DetailScreen';
-import { useNavigation } from '@react-navigation/native';
 const HomeStack = ({ navigation }) => {
   return (
     <Stack.Navigator
@@ -27,7 +29,7 @@ const HomeStack = ({ navigation }) => {
       }}
     >
       <Stack.Screen
-        name="Home3"
+        name="HomeScreen"
         component={HomeScreen}
         options={{
           title:"",
@@ -38,7 +40,7 @@ const HomeStack = ({ navigation }) => {
           ),
           headerRight: () => (
             
-            <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={{ marginRight: 10 }}>
+            <TouchableOpacity onPress={() => navigation.navigate('Profile1')} style={{ marginRight: 10 }}>
               <AVATARSVG />
             </TouchableOpacity>
           ),
@@ -64,9 +66,43 @@ const HomeStack = ({ navigation }) => {
     </Stack.Navigator>
   );
 };
+const FavoriteStack = ({navigation}) => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShadowVisible:false,
+        headerStyle: {
+          backgroundColor: "white",
+          elevation: 0, // Android
+          color:"black"
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Favorite"
+        component={FavoriteScreen}
+        options={{
+          title:"",
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginLeft: 10 }}>
+              <BACKSVG />
+            </TouchableOpacity>
+          ),
+          headerRight: () => ( 
+            <TouchableOpacity style={{ marginRight: 10 }}>
+              <LIKESVG />
+            </TouchableOpacity>
+          ),
+          tabBarVisible: false ,
+          animationEnabled: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 const TabArr = [
-  { route: 'Home', label: 'Home', type: Icons.Ionicons, activeIcon: 'grid', inActiveIcon: 'grid-outline', component: HomeStack },
-  { route: 'Favorite', label: 'Favorite', type: Icons.MaterialCommunityIcons, activeIcon: 'heart-plus', inActiveIcon: 'heart-plus-outline', component: FavoriteScreen ,options: { tabBarVisible: false }},
+  { route: 'Home2', label: 'Home', type: Icons.Ionicons, activeIcon: 'grid', inActiveIcon: 'grid-outline', component: HomeStack },
+  { route: 'Favorite2', label: 'Favorite', type: Icons.MaterialCommunityIcons, activeIcon: 'heart-plus', inActiveIcon: 'heart-plus-outline', component: FavoriteStack ,options: { tabBarVisible: false }},
   { route: 'Profile1', label: 'Profile', type: Icons.FontAwesome, activeIcon: 'user-circle', inActiveIcon: 'user-circle-o', component: ProfileStack,options: { tabBarVisible: false } },
 ];
 const TabButton = (props) => {
@@ -99,7 +135,6 @@ const TabButton = (props) => {
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
@@ -115,10 +150,12 @@ const TabNavigator = () => {
     {TabArr.map((item, index) => {
       return (
         <Tab.Screen key={index} name={item.route} component={item.component}
-          options={{
-            tabBarShowLabel: false,
+        options={({route}) => ({
+          tabBarStyle: {
+            display: getTabBarVisibility(route),
+          },
             tabBarButton: (props) => <TabButton {...props} item={item} />
-          }}
+          })}
         />
       )
     })}
@@ -126,7 +163,15 @@ const TabNavigator = () => {
     </Tab.Navigator>
   );
 };
-
+const getTabBarVisibility = route => {
+  // console.log(route);
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+  // console.log(routeName);
+  if( routeName == 'Detail' ) {
+    return 'none';
+  }
+  return 'flex';
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

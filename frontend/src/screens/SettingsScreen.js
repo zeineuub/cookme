@@ -15,7 +15,7 @@ import { useFonts } from "expo-font";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const API_URL = "http://192.168.1.7:3000/api/v1";
+const API_URL = "http://192.168.146.55:3000/api/v1";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 import { useIsFocused } from "@react-navigation/native";
@@ -198,24 +198,6 @@ const SettingsScreen = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={styles.container}>
-            <Icon color={"#4A4A4A"} size={25} name={"theme-light-dark"} />
-            <Text style={styles.text}>{i18n.t("settings.darkTheme")}</Text>
-            <TouchableRipple
-              onPress={() => {
-                toggleTheme();
-              }}
-              style={{ flex: 1, position: "absolute", left: 150 }}
-            >
-              <View style={styles.preference}>
-                
-                <View pointerEvents="none">
-                  <Switch value={paperTheme.dark} />
-                </View>
-              </View>
-              
-            </TouchableRipple>
           </View>
           <View style={styles.container}>
             <IonIcon color={"#4A4A4A"} size={25} name={"log-out-outline"} />

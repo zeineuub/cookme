@@ -13,7 +13,13 @@ const Stack = createStackNavigator();
 
 const AuthStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
-
+    <Stack.Screen
+      name="Onboarding"
+      component={OnboardingScreen}
+      options={{
+        animationEnabled: false,
+      }}
+    />
     <Stack.Screen
       name="SignIn"
       component={SignInScreen}
@@ -43,13 +49,8 @@ const AuthStack = () => (
         animationEnabled: false,
       }}
     />
-    <Stack.Screen
-      name="Onboarding"
-      component={OnboardingScreen}
-      options={{
-        animationEnabled: false,
-      }}
-    />
+
+    
   </Stack.Navigator>
 );
 

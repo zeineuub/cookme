@@ -16,7 +16,7 @@ const ProfileStack = ({ navigation }) => {
       }}
     >
       <Stack.Screen
-        name="Profile2"
+        name="Profile"
         component={ProfileScreen}
         options={{
           title: "",

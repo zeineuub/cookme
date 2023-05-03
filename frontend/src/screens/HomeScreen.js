@@ -9,13 +9,16 @@ import RecipeCard from '../components/RecipeCard';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18n from "i18n-js";
 import Toast from 'react-native-toast-message';
-const recipe_results = [];
+let recipe_results = [];
 import INGREDIENTSSVG from '../assets/images/ingredients.svg'
-const API_URL = "http://192.168.1.7:3000/api/v1";
+const API_URL = "http://192.168.146.55:3000/api/v1";
 import { v4 as uuidv4 } from 'uuid';
-
+import * as Localization from "expo-localization";
 import { fr, en } from "../assets/i18n/supportedLanguages";
 const HomeScreen = ({ navigation }) => {
+  i18n.fallbacks = true;
+  i18n.translations = { en,fr };
+  i18n.locale = Localization.locale;
   const [ingredients, setIngredients] = useState("");
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,13 +54,12 @@ const HomeScreen = ({ navigation }) => {
   }; 
   function parseAPIRecipeDetails(complexData) {
     const recipeData = {};
-    recipeData.id = complexData.id;
+    recipeData.recipeId = complexData.id;
     recipeData.title = complexData.title;
     recipeData.servings = complexData.servings;
     recipeData.sourceUrl = complexData.sourceUrl;
     recipeData.image = complexData.image;
     recipeData.readyInMinutes = complexData.readyInMinutes || 0;
-    console.log('r ',recipeData.summary)
 
     const ingredients = [];
     for (const ingredient of complexData.extendedIngredients) {
@@ -100,11 +102,9 @@ const HomeScreen = ({ navigation }) => {
     return recipeData;
   }
   const searchRecipes = async () => {
-    console.log('here')
     setIsLoading(true);
-    console.log("ingre ",ingredients)
     const apiKey = '69808e0f62e54841a4cf9a114059a719'; // Replace with your own API key
-    const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&includeIngredients=${ingredients}&addRecipeInformation=true&sort=max-used-ingredients&instructionsRequired=true&fillIngredients=true&number=5`;
+    const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${apiKey}&includeIngredients=${ingredients}&addRecipeInformation=true&sort=max-used-ingredients&instructionsRequired=true&fillIngredients=true&number=15`;
     await fetch(`${url}`, {
       method: "GET",
       headers: {
@@ -162,7 +162,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <TextInput
           style={styles.searchBar}
-          placeholder="Enter ingredients"
+          placeholder="strawberry,egg ...."
           value={ingredients}
           onChangeText={(text) => setIngredients(text)}
           onSubmitEditing={searchRecipes}
@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: '100%',
+    height:"100%"
   },
   noResults: {
     flex: 1,

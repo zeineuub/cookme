@@ -171,13 +171,13 @@ module.exports.checkIfUserExist = async ({ email }) => {
  * @returns { data: { accessToken } }
  */
 module.exports.authenticate = async ({ email, password }) => {
+  console.log(email)
     const user = await User.findOne({ email });
     if (!user || !bcrypt.compareSync(password, user.password)) {
       throw new AuthenticationError(
         i18n.__('user.authentication.invalid_credentials')
       );
     }
-  
     const payload = {
       sub: user.id,
       email: user.email,
@@ -209,8 +209,11 @@ module.exports.getUserById = async (id) => {
     password: false,
   })
   .populate({
-    path:'myRecipes',
-    select:['title', 'ingredients', 'instructions','title','image','equipments','servings','readyInMinutes']
+    path: 'myRecipes',
+    populate: {
+      path: '_id',
+      select: ['title', 'ingredients', 'instructions', 'image', 'equipments', 'servings', 'readyInMinutes']
+    }
   });
 
   if (!user) {
@@ -218,7 +221,7 @@ module.exports.getUserById = async (id) => {
     throw new UserNotFoundError('getUserById');
   }
 
-  return user.myRecipes;
+  return user;
 };
 
 

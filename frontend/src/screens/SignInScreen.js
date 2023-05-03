@@ -15,10 +15,9 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import BGDOWNSVG from "../assets/images/sign_in_down.svg";
 import BGUPSVG from "../assets/images/sign_in_up.svg";
-const API_URL = "http://192.168.1.7:3000/api/v1";
+const API_URL = "http://192.168.146.55:3000/api/v1";
 import { useFonts } from "expo-font";
 import * as Localization from "expo-localization";
-
 import i18n from "i18n-js";
 import { fr, en } from "../assets/i18n/supportedLanguages";
 const SignInScreen = ({ navigation }) => {
@@ -53,17 +52,23 @@ const SignInScreen = ({ navigation }) => {
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError('Invalid email format');
-    } else {
+    if (email.length == 0 ) {
+      setPasswordError('Email must not be empty'); 
+    } else if (!emailRegex.test(email) ) {
+        setEmailError('Invalid email format');
+    }else {
       setEmailError('');
     }
   };
 
   const validatePassword = (password) => {
-    if (password.length < 8) {
+    if (password == null ) {
+      setPasswordError('Password must not be empty');
+
+    } else if (password.length < 8) {
       setPasswordError('Password must be at least 8 characters long');
-    } else {
+    }
+    else {
       setPasswordError('');
     }
   };
@@ -88,13 +93,17 @@ const SignInScreen = ({ navigation }) => {
             setIsError(true);
             setMessage(message);
             setIsLoading(false);
+
+            showToastMsg(message);
+
           } else {
             try {
               await AsyncStorage.setItem("accessToken", jsonRes.accessToken);
               await AsyncStorage.setItem("role", jsonRes.role);
               setIsError(false);
-              const role = await AsyncStorage.getItem("role");
-              navigation.navigate("HomeScreen");
+              const token = await AsyncStorage.getItem("accessToken");
+              signIn(token);
+              navigation.navigate("Home");
             } catch (error) {
               console.log(error);
               setIsLoading(false);
@@ -111,6 +120,8 @@ const SignInScreen = ({ navigation }) => {
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
+        showToastMsg(err);
+
       });
   };
   const signup = () => {
@@ -136,7 +147,7 @@ const SignInScreen = ({ navigation }) => {
     >
       <BGUPSVG style={styles.bg_up} />
       <View>
-        <Text style={styles.textSignIn}>Bon Retour</Text>
+        <Text style={styles.textSignIn}>{i18n.t('form.welcomeTxt')}</Text>
       </View>
 
       <TextInput
@@ -151,7 +162,7 @@ const SignInScreen = ({ navigation }) => {
       {emailError ? <Text style={[styles.message, { color: "red" }]}>{emailError}</Text> : null}
       <TextInput
         style={styles.input}
-        placeholder="mot de passe"
+        placeholder={i18n.t('form.pwd')}
         secureTextEntry={true}
         onChangeText={(text) => {
           setPassword(text);
@@ -164,7 +175,7 @@ const SignInScreen = ({ navigation }) => {
       </Text>
       <View>
         <TouchableOpacity onPress={forgetPassword}>
-          <Text style={styles.psdTxt}>Mot de passe oublié ?</Text>
+          <Text style={styles.psdTxt}>{i18n.t('form.forgotPassword')}</Text>
         </TouchableOpacity>
       </View>
       <LinearGradient
@@ -174,7 +185,7 @@ const SignInScreen = ({ navigation }) => {
         style={styles.button}
       >
         <TouchableOpacity onPress={onSubmitHandler}>
-          <Text style={styles.text}>Connecter</Text>
+          <Text style={styles.text}>{i18n.t('buttons.connect')}</Text>
         </TouchableOpacity>
       </LinearGradient>
       <View>
@@ -189,7 +200,7 @@ const SignInScreen = ({ navigation }) => {
           overlayColor="rgba(255,255,255,255)"
           animationStyle={styles.lottie}
           speed={1}
-          source={require("../assets/lottie/food.json")} // Add here
+          source={require("../assets/lottie/loader.json")} // Add here
         />
       </View>
     </SafeAreaView>
@@ -208,8 +219,8 @@ const styles = StyleSheet.create({
     height: 300,
   },
   bg_up: {
-    top: 30,
-    left:80
+    top: 20,
+    left:90
   },
   bg_down: {
     top: 20,

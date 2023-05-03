@@ -35,6 +35,7 @@
     "scan":"Scanner",
     "type":"Saisir manuellement",
     "send":"Envoyé",
+    
     "createAccount":"Créer un compte",
     "doHaveAccount": "J'ai déjà un compte",
     "check":"Verifier",
